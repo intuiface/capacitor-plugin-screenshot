@@ -2,7 +2,7 @@ name: verify
 on: push
 jobs:
   code-verify:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v4
       - name: Run Verify Code
