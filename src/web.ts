@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { CapacitorScreenshotPlugin, ScreenshotOptions } from './definitions';
+import type { CapacitorScreenshotPlugin, ScreenshotOptions, ScreenshotValue } from './definitions';
 
 export class CapacitorScreenshotWeb
   extends WebPlugin
@@ -9,7 +9,7 @@ export class CapacitorScreenshotWeb
   private videoCapture: any;
   private captureCanvas: any;
 
-  async getScreenshot(options: ScreenshotOptions): Promise<{ base64: string, URI: string } | null> {
+  async getScreenshot(options: ScreenshotOptions): Promise<ScreenshotValue | null> {
     try {
       if (!this.captureStream) {
         // display a message ?
@@ -44,13 +44,18 @@ export class CapacitorScreenshotWeb
           this.captureCanvas.height = this.videoCapture.videoHeight;
           // draw the video into canvas
           this.captureCanvas.getContext('2d').drawImage(this.videoCapture, 0, 0);
+          let quality = 1.0;
+          if(options.quality)
+          {
+            quality = options.quality / 100;
+          }
           // get the image of the canvas
-          const frame = this.captureCanvas.toDataURL('image/jpeg', options.quality || 1.0);
+          const frame = this.captureCanvas.toDataURL('image/jpeg', quality);
           // pause the video
           this.videoCapture.pause();
 
           // return the image
-          resolve({ URI: frame });
+          resolve({ base64: frame });
         };
 
         // bind on loaded metadata to draw the video when the video is ready

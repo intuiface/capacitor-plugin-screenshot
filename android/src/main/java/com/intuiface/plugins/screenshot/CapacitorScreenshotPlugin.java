@@ -164,8 +164,7 @@ public class CapacitorScreenshotPlugin extends Plugin {
 
             JSObject ret = new JSObject();
             String base64Image = convertBitmapToBase64(bitmap, quality);
-            ret.put("base64", base64Image);
-            ret.put("URI", "data:image/png;base64," + base64Image);
+            ret.put("base64", "data:image/png;base64," + base64Image);
             savedCall.resolve(ret);
 
             // Release any resources

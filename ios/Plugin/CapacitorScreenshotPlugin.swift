@@ -25,8 +25,7 @@ public class CapacitorScreenshotPlugin: CAPPlugin {
                 let file = "data:image/png;base64," + base64Result
 
                 call.resolve([
-                    "base64": base64Result,
-                    "URI": file
+                    "base64": file
                 ])
             })
         }
