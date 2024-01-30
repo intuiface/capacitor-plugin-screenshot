@@ -3,14 +3,14 @@
 // Extended with BREAKING CHANGE, exclamation mark support (!) and space before " : " for French people
 
 
-const examples = "Valid message pattern: <TYPE>: <SUBJECT> \n" +
+const examples = "Valid message pattern: <TYPE>!?: <SUBJECT> \n" +
   "Valid types : 'feat', 'feature', 'fix', 'perf', 'refactor', 'style', 'test', 'build', 'docs', 'chore', 'ci', 'revert', 'Merge', 'deps' \n" +
   "For more information, go to https://www.conventionalcommits.org/ \n" + 
   "-                                 \n";
 
 const fs = require('fs');
 
-const regex = /^(feat|feature|fix|perf|refactor|style|test|build|docs|chore|ci|revert|deps)\s?:\s.*/gm;
+const regex = /^(feat|feature|fix|perf|refactor|style|test|build|docs|chore|ci|revert|deps)!?\s?:\s.*/gm;
 const regexMerge = /^(merge branch)\s.*/gm;
 
 // Alternative syntax using RegExp constructor
