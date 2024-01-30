@@ -13,25 +13,36 @@ npx cap sync
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
+* [`getScreenshot(...)`](#getscreenshot)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
+### getScreenshot(...)
 
 ```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
+getScreenshot(options: ScreenshotOptions) => Promise<{ base64: string; URI: string; } | null>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+| Param         | Type                                                            |
+| ------------- | --------------------------------------------------------------- |
+| **`options`** | <code><a href="#screenshotoptions">ScreenshotOptions</a></code> |
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ base64: string; URI: string; } | null&gt;</code>
 
 --------------------
+
+
+### Interfaces
+
+
+#### ScreenshotOptions
+
+| Prop          | Type                |
+| ------------- | ------------------- |
+| **`quality`** | <code>number</code> |
 
 </docgen-api>

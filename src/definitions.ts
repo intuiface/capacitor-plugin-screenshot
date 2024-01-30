@@ -1,3 +1,7 @@
 export interface CapacitorScreenshotPlugin {
-  echo(options: { value: string }): Promise<{ value: string }>;
+  getScreenshot(options: ScreenshotOptions): Promise<{ base64: string, URI: string } | null>;
+}
+
+export interface ScreenshotOptions {
+  quality: number
 }
