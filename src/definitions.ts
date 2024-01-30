@@ -16,9 +16,9 @@ export interface ScreenshotOptions {
 }
 
 export interface ScreenshotValue {
-   /**
-    * The base64 string of the screenshot.
-    * Can be null
-    */
-   base64?: string
+  /**
+   * The base64 string of the screenshot.
+   * Can be null
+   */
+  base64?: string
 }
