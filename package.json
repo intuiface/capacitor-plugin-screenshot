@@ -42,7 +42,8 @@
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepare": "npx shx cp -u ./.githooks/* ./.git/hooks/"
   },
   "devDependencies": {
     "@capacitor/android": "^5.0.0",

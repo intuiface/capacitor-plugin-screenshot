@@ -56,6 +56,8 @@ Function to take a screenshot
 
 </docgen-api>
 
+--------------------
+
 ## iOS
 
 Nothing more to do, it should work by calling the `getScreenshot` function.
