@@ -1,15 +1,22 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { CapacitorScreenshotPlugin, ScreenshotOptions, ScreenshotValue } from './definitions';
+import type {
+  CapacitorScreenshotPlugin,
+  ScreenshotOptions,
+  ScreenshotValue,
+} from './definitions';
 
 export class CapacitorScreenshotWeb
   extends WebPlugin
-  implements CapacitorScreenshotPlugin {
+  implements CapacitorScreenshotPlugin
+{
   private captureStream: any;
   private videoCapture: any;
   private captureCanvas: any;
 
-  async getScreenshot(options: ScreenshotOptions): Promise<ScreenshotValue | null> {
+  async getScreenshot(
+    options: ScreenshotOptions,
+  ): Promise<ScreenshotValue | null> {
     try {
       if (!this.captureStream) {
         // display a message ?
@@ -22,11 +29,11 @@ export class CapacitorScreenshotWeb
         // start sharing screen (ask for it)
         this.captureStream = await mediaDevices.getDisplayMedia({
           preferCurrentTab: true,
-          audio: false, video:
-          {
+          audio: false,
+          video: {
             width,
-            height
-          }
+            height,
+          },
         });
         // create a video tag
         this.videoCapture = document.createElement('video');
@@ -34,19 +41,22 @@ export class CapacitorScreenshotWeb
         this.captureCanvas = document.createElement('canvas');
       }
 
-
-      return new Promise<any>((resolve) => {
+      return new Promise<any>(resolve => {
         const callbackLoadedMetadata = () => {
           // unbind from loaded metadata
-          this.videoCapture.removeEventListener('loadedmetadata', callbackLoadedMetadata);
+          this.videoCapture.removeEventListener(
+            'loadedmetadata',
+            callbackLoadedMetadata,
+          );
           // set the canvas size with the video size
           this.captureCanvas.width = this.videoCapture.videoWidth;
           this.captureCanvas.height = this.videoCapture.videoHeight;
           // draw the video into canvas
-          this.captureCanvas.getContext('2d').drawImage(this.videoCapture, 0, 0);
+          this.captureCanvas
+            .getContext('2d')
+            .drawImage(this.videoCapture, 0, 0);
           let quality = 1.0;
-          if(options.quality)
-          {
+          if (options.quality) {
             quality = options.quality / 100;
           }
           // get the image of the canvas
@@ -65,11 +75,9 @@ export class CapacitorScreenshotWeb
         // play the video
         this.videoCapture.play();
       });
-    }
-    catch (err) {
+    } catch (err) {
       console.error(`Error: ${err as string}`);
       return null;
     }
-
   }
 }

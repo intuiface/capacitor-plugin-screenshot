@@ -56,19 +56,18 @@ Function to take a screenshot
 
 </docgen-api>
 
---------------------
+---
 
 ## iOS
 
 Nothing more to do, it should work by calling the `getScreenshot` function.
 
-
 ## Android
 
-To be able to take screenshot on Android, you have to declare a foreground service in the `AndroidManifest.xml` in the application tag : 
+To be able to take screenshot on Android, you have to declare a foreground service in the `AndroidManifest.xml` in the application tag :
 
 ```xml
 <service android:enabled="true" android:foregroundServiceType="mediaProjection" android:name="com.intuiface.plugins.screenshot.ScreenCaptureService" />
-``` 
+```
 
 The foreground service will ask you to cast your screen and this is mandatory to take screenshot with this plugin as we use the Media Projection API (https://developer.android.com/reference/android/media/projection/MediaProjection) of Android.

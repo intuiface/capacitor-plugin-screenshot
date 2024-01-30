@@ -7,12 +7,11 @@ export interface CapacitorScreenshotPlugin {
   getScreenshot(options: ScreenshotOptions): Promise<ScreenshotValue | null>;
 }
 
-
 export interface ScreenshotOptions {
   /**
    * The quality of the screenshot between 0-100
    */
-  quality: number
+  quality: number;
 }
 
 export interface ScreenshotValue {
@@ -20,5 +19,5 @@ export interface ScreenshotValue {
    * The base64 string of the screenshot.
    * Can be null
    */
-  base64?: string
+  base64?: string;
 }

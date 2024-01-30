@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths-ignore:
-      - "**.md"
-      - ".vscode/**"
+      - '**.md'
+      - '.vscode/**'
   pull_request:
     paths-ignore:
-      - "**.md"
-      - ".vscode/**"
+      - '**.md'
+      - '.vscode/**'
   workflow_dispatch:
 
 env:

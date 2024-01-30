@@ -26,6 +26,7 @@ public class ScreenCaptureService extends Service {
      * runs in the same process as its clients, we don't need to deal with IPC.
      */
     public class LocalBinder extends Binder {
+
         public ScreenCaptureService getService() {
             // Return this instance of ScreenCaptureService so clients can call public methods
             return ScreenCaptureService.this;
@@ -45,9 +46,7 @@ public class ScreenCaptureService extends Service {
     public void startForeground() {
         NotificationChannel chan = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            chan = new NotificationChannel(CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_NONE);
+            chan = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_NONE);
         }
         NotificationManager manager = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -62,15 +61,14 @@ public class ScreenCaptureService extends Service {
         Notification.Builder notificationBuilder = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             notificationBuilder = new Notification.Builder(this, CHANNEL_ID);
-        }
-        else
-        {
+        } else {
             notificationBuilder = new Notification.Builder(this);
         }
-        Notification notification = notificationBuilder.setOngoing(true)
-                .setContentTitle("ScreenCaptureService is running in the foreground")
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .build();
+        Notification notification = notificationBuilder
+            .setOngoing(true)
+            .setContentTitle("ScreenCaptureService is running in the foreground")
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .build();
         startForeground(notificationId, notification);
     }
 
