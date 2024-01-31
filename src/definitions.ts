@@ -12,6 +12,10 @@ export interface ScreenshotOptions {
    * The quality of the screenshot between 0-100
    */
   quality: number;
+  /**
+   * The name of the file to save
+   */
+  name?: string;
 }
 
 export interface ScreenshotValue {
@@ -20,4 +24,9 @@ export interface ScreenshotValue {
    * Can be null
    */
   base64?: string;
+  /**
+   * The file uri where the image is saved
+   * Can be null
+   */
+  URI?: string;
 }

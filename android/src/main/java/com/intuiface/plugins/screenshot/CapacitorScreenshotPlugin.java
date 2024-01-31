@@ -26,6 +26,10 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 @CapacitorPlugin(name = "CapacitorScreenshot", requestCodes = { 1 })
@@ -102,42 +106,35 @@ public class CapacitorScreenshotPlugin extends Plugin {
         int screenDensity = metrics.densityDpi;
 
         // Create an ImageReader to capture the screen content
-        try (
-            @SuppressLint("WrongConstant") ImageReader imageReader = ImageReader.newInstance(
-                screenWidth,
-                screenHeight,
-                PixelFormat.RGBA_8888,
-                1
-            )
-        ) {
-            // Create a VirtualDisplay using the mediaProjection and imageReader
-            final VirtualDisplay virtualDisplay = mediaProjection.createVirtualDisplay(
-                "ScreenCapture",
-                screenWidth,
-                screenHeight,
-                screenDensity,
-                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                imageReader.getSurface(),
-                null,
-                handler
-            );
+        @SuppressLint("WrongConstant")
+        ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
+        // Create a VirtualDisplay using the mediaProjection and imageReader
+        final VirtualDisplay virtualDisplay = mediaProjection.createVirtualDisplay(
+            "ScreenCapture",
+            screenWidth,
+            screenHeight,
+            screenDensity,
+            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+            imageReader.getSurface(),
+            null,
+            handler
+        );
 
-            // Handle the captured images from the ImageReader
-            imageReader.setOnImageAvailableListener(
-                reader -> {
-                    Image image = imageReader.acquireLatestImage();
-                    if (image != null) {
-                        // Process the captured image
-                        processScreenshot(image);
-                        // Release the image resources
-                        image.close();
+        // Handle the captured images from the ImageReader
+        imageReader.setOnImageAvailableListener(
+            reader -> {
+                Image image = imageReader.acquireLatestImage();
+                if (image != null) {
+                    // Process the captured image
+                    processScreenshot(image);
+                    // Release the image resources
+                    image.close();
 
-                        virtualDisplay.release();
-                    }
-                },
-                handler
-            );
-        }
+                    virtualDisplay.release();
+                }
+            },
+            handler
+        );
     }
 
     private void processScreenshot(Image image) {
@@ -150,7 +147,19 @@ public class CapacitorScreenshotPlugin extends Plugin {
 
             JSObject ret = new JSObject();
             String base64Image = convertBitmapToBase64(bitmap, quality);
+
+            // save the bitmap as file
+            String filename = savedCall.getString("name", "screenshot");
+            File file = new File(getContext().getFilesDir(), filename + ".png");
+            try (FileOutputStream out = new FileOutputStream(file)) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             ret.put("base64", "data:image/png;base64," + base64Image);
+            ret.put("URI", file.toURI());
             savedCall.resolve(ret);
 
             // Release any resources

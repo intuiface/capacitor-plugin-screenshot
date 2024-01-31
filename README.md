@@ -48,9 +48,10 @@ Function to take a screenshot
 
 #### ScreenshotValue
 
-| Prop         | Type                | Description                                      |
-| ------------ | ------------------- | ------------------------------------------------ |
-| **`base64`** | <code>string</code> | The base64 string of the screenshot. Can be null |
+| Prop         | Type                | Description                                       |
+| ------------ | ------------------- | ------------------------------------------------- |
+| **`base64`** | <code>string</code> | The base64 string of the screenshot. Can be null  |
+| **`URI`**    | <code>string</code> | The file uri where the image is saved Can be null |
 
 
 #### ScreenshotOptions
@@ -58,6 +59,7 @@ Function to take a screenshot
 | Prop          | Type                | Description                                 |
 | ------------- | ------------------- | ------------------------------------------- |
 | **`quality`** | <code>number</code> | The quality of the screenshot between 0-100 |
+| **`name`**    | <code>string</code> | The name of the file to save                |
 
 </docgen-api>
 
