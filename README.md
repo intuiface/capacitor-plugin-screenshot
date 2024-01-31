@@ -1,6 +1,11 @@
 # capacitor-plugin-screenshot
 
-Capacitor plugin to take screenshot for iOS and Android devices
+Capacitor plugin to take screenshot for iOS and Android devices.
+
+The main goal of this plugin is to be able to take a screenshot of the application exactly as you see it. Even if there are playing videos, an iframe with some content, a cross-origin CSS...etc.
+
+This plugin uses the `takeSnapshot` method of the `WKWebView` for iOS : https://developer.apple.com/documentation/webkit/wkwebview/2873260-takesnapshot
+And for Android, the `MediaProjection` API : https://developer.android.com/reference/android/media/projection/MediaProjection
 
 ## Install
 
@@ -60,9 +65,14 @@ Function to take a screenshot
 
 ## iOS
 
+iOS version 11+ is supported.
+
 Nothing more to do, it should work by calling the `getScreenshot` function.
 
+
 ## Android
+
+Android Version 6+ is supported.
 
 To be able to take screenshot on Android, you have to declare a foreground service in the `AndroidManifest.xml` in the application tag :
 
@@ -70,4 +80,4 @@ To be able to take screenshot on Android, you have to declare a foreground servi
 <service android:enabled="true" android:foregroundServiceType="mediaProjection" android:name="com.intuiface.plugins.screenshot.ScreenCaptureService" />
 ```
 
-The foreground service will ask you to cast your screen and this is mandatory to take screenshot with this plugin as we use the Media Projection API (https://developer.android.com/reference/android/media/projection/MediaProjection) of Android.
+The foreground service will ask you to cast your screen and this is mandatory to take screenshot with the `MediaProjection` API.

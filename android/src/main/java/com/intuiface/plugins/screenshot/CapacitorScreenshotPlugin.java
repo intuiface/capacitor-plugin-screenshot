@@ -2,10 +2,8 @@ package com.intuiface.plugins.screenshot;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
@@ -18,7 +16,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.view.View;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -66,18 +63,8 @@ public class CapacitorScreenshotPlugin extends Plugin {
             savedCall = call;
             startScreenshotCapture(mediaProjection);
         } else {
-            // start foreground service
-            //            Context context = getContext();
-            //            Intent intent = new Intent(context, ScreenCaptureService.class);
-            //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //                context.startForegroundService(intent);
-            //            } else {
-            //                context.startService(intent);
-            //            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ScreenCaptureManager screenCaptureManager = new ScreenCaptureManager(getContext());
-                screenCaptureManager.startForeground();
-            }
+            ScreenCaptureManager screenCaptureManager = new ScreenCaptureManager(getContext());
+            screenCaptureManager.startForeground();
 
             getBridge()
                 .getActivity()
@@ -114,37 +101,43 @@ public class CapacitorScreenshotPlugin extends Plugin {
 
         int screenDensity = metrics.densityDpi;
 
-        @SuppressLint("WrongConstant")
         // Create an ImageReader to capture the screen content
-        ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
+        try (
+            @SuppressLint("WrongConstant") ImageReader imageReader = ImageReader.newInstance(
+                screenWidth,
+                screenHeight,
+                PixelFormat.RGBA_8888,
+                1
+            )
+        ) {
+            // Create a VirtualDisplay using the mediaProjection and imageReader
+            final VirtualDisplay virtualDisplay = mediaProjection.createVirtualDisplay(
+                "ScreenCapture",
+                screenWidth,
+                screenHeight,
+                screenDensity,
+                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                imageReader.getSurface(),
+                null,
+                handler
+            );
 
-        // Create a VirtualDisplay using the mediaProjection and imageReader
-        final VirtualDisplay virtualDisplay = mediaProjection.createVirtualDisplay(
-            "ScreenCapture",
-            screenWidth,
-            screenHeight,
-            screenDensity,
-            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-            imageReader.getSurface(),
-            null,
-            handler
-        );
+            // Handle the captured images from the ImageReader
+            imageReader.setOnImageAvailableListener(
+                reader -> {
+                    Image image = imageReader.acquireLatestImage();
+                    if (image != null) {
+                        // Process the captured image
+                        processScreenshot(image);
+                        // Release the image resources
+                        image.close();
 
-        // Handle the captured images from the ImageReader
-        imageReader.setOnImageAvailableListener(
-            reader -> {
-                Image image = imageReader.acquireLatestImage();
-                if (image != null) {
-                    // Process the captured image
-                    processScreenshot(image);
-                    // Release the image resources
-                    image.close();
-
-                    virtualDisplay.release();
-                }
-            },
-            handler
-        );
+                        virtualDisplay.release();
+                    }
+                },
+                handler
+            );
+        }
     }
 
     private void processScreenshot(Image image) {

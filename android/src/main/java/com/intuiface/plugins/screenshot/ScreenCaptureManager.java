@@ -13,7 +13,7 @@ public class ScreenCaptureManager {
     private State currentState = State.UNBIND_SERVICE;
 
     /** Defines callbacks for service binding, passed to bindService() */
-    private ServiceConnection connection = new ServiceConnection() {
+    private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             // We've bound to ScreenCaptureService, cast the IBinder and get ScreenCaptureService instance
