@@ -4,9 +4,11 @@ Capacitor plugin to take screenshot for iOS and Android devices.
 
 The main goal of this plugin is to be able to take a screenshot of the application exactly as you see it. Even if there are playing videos, an iframe with some content, a cross-origin CSS...etc.
 
-This plugin uses the `takeSnapshot` method of the `WKWebView` for iOS : https://developer.apple.com/documentation/webkit/wkwebview/2873260-takesnapshot
-And for Android, the `MediaProjection` API : https://developer.android.com/reference/android/media/projection/MediaProjection
-For the web, `MediaDevices` is use to cast the browser tab : https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia 
+This plugin uses the `takeSnapshot` method of the `WKWebView` for iOS : https://developer.apple.com/documentation/webkit/wkwebview/2873260-takesnapshot.
+
+And for Android, the `MediaProjection` API : https://developer.android.com/reference/android/media/projection/MediaProjection.
+
+For the web, `MediaDevices` is use to cast the browser tab : https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia.
 
 ## Install
 
