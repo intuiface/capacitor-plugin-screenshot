@@ -12,11 +12,13 @@ public class CapacitorScreenshotPlugin: CAPPlugin {
     @objc func getScreenshot(_ call: CAPPluginCall) {
 
         let quality = ((call.getDouble("quality") ?? 100) / 100)
+        let filename = (call.getString("name") ?? "screenshot")
         DispatchQueue.main.async {
             let config = WKSnapshotConfiguration()
             config.rect = self.webView!.frame
             config.afterScreenUpdates = false
-            self.webView?.takeSnapshot(with: config, completionHandler: { (image: UIImage?, error: Error?) in
+            self.webView?.takeSnapshot(with: config, completionHandler: {
+                (image: UIImage?, error: Error?) in
                 if error != nil {
                     return
                 }
@@ -24,7 +26,21 @@ public class CapacitorScreenshotPlugin: CAPPlugin {
                 let base64Result = imageData.base64EncodedString()
                 let file = "data:image/png;base64," + base64Result
 
+                var fileURI: URL = URL.init(fileURLWithPath: "")
+                do {
+
+                    if #available(iOS 16.0, *) {
+                        fileURI = URL(fileURLWithPath: filename+".png", relativeTo: .documentsDirectory)
+                    } else {
+                        // Fallback on earlier versions
+                        fileURI = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathExtension(filename+".png")
+                    }
+                    try imageData.write(to: fileURI)
+                } catch {
+                    // nothing to do
+                }
                 call.resolve([
+                    "URI": fileURI.absoluteString,
                     "base64": file
                 ])
             })
