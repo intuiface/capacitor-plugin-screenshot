@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-plugin-screenshot",
+  "name": "@intuiface/capacitor-plugin-screenshot",
   "version": "1.0.0",
   "description": "Capacitor plugin to take screenshot for iOS and Android devices",
   "main": "dist/plugin.cjs.js",

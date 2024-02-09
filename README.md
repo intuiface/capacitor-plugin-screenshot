@@ -13,7 +13,7 @@ For the web, `MediaDevices` is use to cast the browser tab : https://developer.m
 ## Install
 
 ```bash
-npm install capacitor-plugin-screenshot
+npm install @intuiface/capacitor-plugin-screenshot
 npx cap sync
 ```
 
