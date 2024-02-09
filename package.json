@@ -11,7 +11,7 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "CapacitorPluginScreenshot.podspec"
+    "IntuifaceCapacitorPluginScreenshot.podspec"
   ],
   "author": "intuiface",
   "license": "MIT",
