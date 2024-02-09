@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+// Original source: https://github.com/prahladyeri/enforce-git-message/
+// Extended with BREAKING CHANGE, exclamation mark support (!) and space before " : " for French people
+
+
+const examples = "Valid message pattern: <TYPE>(SCOPE)?!?: <SUBJECT> \n" +
+  "Valid types : 'feat', 'feature', 'fix', 'perf', 'refactor', 'style', 'test', 'build', 'docs', 'chore', 'ci', 'revert', 'Merge', 'deps' \n" +
+  "Scope is not required and can be anything \n" +
+  "For more information, go to https://www.conventionalcommits.org/ \n" + 
+  "-                                 \n";
+
+const fs = require('fs');
+
+const regex = /^(feat|feature|fix|perf|refactor|style|test|build|docs|chore|ci|revert|deps)(\(.*\))?(!)?\s?:\s.*/gm;
+const regexMerge = /^(merge branch)\s.*/gm;
+
+// Alternative syntax using RegExp constructor
+// const regex = new RegExp('(feat|feature|fix|perf|refactor|style|test|build|docs|chore|ci|revert|Merge)\\s?:\\s.*', 'gm')
+
+const commitMsg = fs.readFileSync(process.argv[2], 'utf8').trim().toLowerCase();
+
+if(commitMsg.match(regex) || commitMsg.match(regexMerge))
+{
+    console.log("ok valid");
+    process.exit(0);
+}
+else
+{
+    console.error("\n\nCOMMIT FAILED!");
+    console.error("Please enter commit message in the conventional format and try to commit again.");
+    console.error(examples);
+    process.exit(1);
+}
