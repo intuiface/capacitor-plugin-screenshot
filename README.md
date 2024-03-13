@@ -59,10 +59,11 @@ Function to take a screenshot
 
 #### ScreenshotOptions
 
-| Prop          | Type                | Description                                 |
-| ------------- | ------------------- | ------------------------------------------- |
-| **`quality`** | <code>number</code> | The quality of the screenshot between 0-100 |
-| **`name`**    | <code>string</code> | The name of the file to save                |
+| Prop          | Type                | Description                                     |
+| ------------- | ------------------- | ----------------------------------------------- |
+| **`size`**    | <code>number</code> | The desired size (here width) of the screenshot |
+| **`quality`** | <code>number</code> | The quality of the screenshot between 0-100     |
+| **`name`**    | <code>string</code> | The name of the file to save                    |
 
 </docgen-api>
 
