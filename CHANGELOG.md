@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v1.0.1...v1.0.2) (2024-03-13)
+
+
+### Bug Fixes
+
+* take into account a size property for the snapshot ([b2840c8](https://github.com/intuiface/capacitor-plugin-screenshot/commit/b2840c8093749de4f9dd32e49238cf40d001324c))
+
 ## [1.0.1](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v1.0.0...v1.0.1) (2024-02-09)
 
 
