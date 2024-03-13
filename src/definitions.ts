@@ -9,6 +9,10 @@ export interface CapacitorScreenshotPlugin {
 
 export interface ScreenshotOptions {
   /**
+   * The desired size (here width) of the screenshot
+   */
+  size: number;
+  /**
    * The quality of the screenshot between 0-100
    */
   quality: number;

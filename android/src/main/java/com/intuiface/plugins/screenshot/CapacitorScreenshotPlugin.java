@@ -194,8 +194,9 @@ public class CapacitorScreenshotPlugin extends Plugin {
         // generate the final bitmap at the right size from the bitmap created
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
 
+        int desiredWidth = savedCall.getInt("size", width);
         // scale but keep ratio
-        int scaledWidth = Math.min(width, 1920);
+        int scaledWidth = Math.min(width, desiredWidth);
         int scaledHeight = height * scaledWidth / width;
         bitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, false);
 

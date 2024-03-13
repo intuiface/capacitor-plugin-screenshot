@@ -51,10 +51,19 @@ export class CapacitorScreenshotWeb
           // set the canvas size with the video size
           this.captureCanvas.width = this.videoCapture.videoWidth;
           this.captureCanvas.height = this.videoCapture.videoHeight;
+          let newWidth = this.captureCanvas.width;
+          let newHeight = this.captureCanvas.height;
+          if (options.size) {
+            newWidth = options.size;
+            newHeight =
+              (this.captureCanvas.height * newWidth) / this.captureCanvas.width;
+            this.captureCanvas.width = newWidth;
+            this.captureCanvas.height = newHeight;
+          }
           // draw the video into canvas
           this.captureCanvas
             .getContext('2d')
-            .drawImage(this.videoCapture, 0, 0);
+            .drawImage(this.videoCapture, 0, 0, newWidth, newHeight);
           let quality = 1.0;
           if (options.quality) {
             quality = options.quality / 100;
