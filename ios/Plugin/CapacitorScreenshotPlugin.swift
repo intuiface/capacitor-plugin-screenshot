@@ -13,7 +13,7 @@ public class CapacitorScreenshotPlugin: CAPPlugin {
 
         let quality = ((call.getDouble("quality") ?? 100) / 100)
         let filename = (call.getString("name") ?? "screenshot")
-        
+
         DispatchQueue.main.async {
             let config = WKSnapshotConfiguration()
             config.rect = self.webView!.frame
@@ -24,19 +24,18 @@ public class CapacitorScreenshotPlugin: CAPPlugin {
                     return
                 }
 
-                let imageSize = image?.size;
-                var newImage = image;
-                if(imageSize != nil)
-                {
+                let imageSize = image?.size
+                var newImage = image
+                if imageSize != nil {
                     let size = (call.getDouble("size") ?? Double(imageSize!.width))
-                    
+
                     // compute the new size of the image
-                    let width = Double.minimum(imageSize!.width, size);
-                    let height = imageSize!.height * width / imageSize!.width;
-                    let newSize: CGSize = CGSize(width: width, height: height);
-                    
+                    let width = Double.minimum(imageSize!.width, size)
+                    let height = imageSize!.height * width / imageSize!.width
+                    let newSize: CGSize = CGSize(width: width, height: height)
+
                     // resize the image
-                    newImage = image?.imageWith(newSize: newSize);
+                    newImage = image?.imageWith(newSize: newSize)
                 }
 
                 guard let imageData = newImage!.jpegData(compressionQuality: quality) else {return}
@@ -64,7 +63,6 @@ public class CapacitorScreenshotPlugin: CAPPlugin {
         }
     }
 
-    
 }
 
 extension UIImage {
@@ -72,7 +70,7 @@ extension UIImage {
         let image = UIGraphicsImageRenderer(size: newSize).image { _ in
             draw(in: CGRect(origin: .zero, size: newSize))
         }
-        
+
         return image.withRenderingMode(renderingMode)
     }
 }

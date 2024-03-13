@@ -55,7 +55,8 @@ export class CapacitorScreenshotWeb
           let newHeight = this.captureCanvas.height;
           if (options.size) {
             newWidth = options.size;
-            newHeight = this.captureCanvas.height * newWidth / this.captureCanvas.width;
+            newHeight =
+              (this.captureCanvas.height * newWidth) / this.captureCanvas.width;
             this.captureCanvas.width = newWidth;
             this.captureCanvas.height = newHeight;
           }
