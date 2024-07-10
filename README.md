@@ -71,7 +71,7 @@ Function to take a screenshot
 
 ## iOS
 
-iOS version 11+ is supported.
+iOS version 13+ is supported.
 
 Nothing more to do, it should work by calling the `getScreenshot` function.
 
@@ -84,6 +84,11 @@ To be able to take screenshot on Android, you have to declare a foreground servi
 
 ```xml
 <service android:enabled="true" android:foregroundServiceType="mediaProjection" android:name="com.intuiface.plugins.screenshot.ScreenCaptureService" />
+```
+And also add permissions : 
+```xml
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 ```
 
 The foreground service will ask you to cast your screen and this is mandatory to take screenshot with the `MediaProjection` API.
