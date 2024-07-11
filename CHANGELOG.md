@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v1.0.2...v2.0.0) (2024-07-11)
+
+
+### Features
+
+* migrate capacitor to version 6 ([12a0950](https://github.com/intuiface/capacitor-plugin-screenshot/commit/12a0950abfa929a054fcf5d9751a9bd21c18151e))
+
+
+### Bug Fixes
+
+* take screenshot for Android 14+ ([c75d0be](https://github.com/intuiface/capacitor-plugin-screenshot/commit/c75d0be092335c26390feb7649218ec3a3b4b366))
+
+
+### Miscellaneous Chores
+
+* release 2.0.0 ([d10c788](https://github.com/intuiface/capacitor-plugin-screenshot/commit/d10c788524ba2eeff603e6ec555832a86d2ee7e8))
+
 ## [1.0.2](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v1.0.1...v1.0.2) (2024-03-13)
 
 
