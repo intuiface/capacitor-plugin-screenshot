@@ -41,9 +41,15 @@ public class CapacitorScreenshotPlugin extends Plugin {
     private ActivityResultLauncher<Intent> mediaProjectionActivityLauncher;
 
     private PluginCall savedCall;
+    private VirtualDisplay virtualDisplay;
+    private Handler handler;
 
     @Override
     public void load() {
+        HandlerThread handlerThread = new HandlerThread("ScreenshotThread");
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
+
         mediaProjectionActivityLauncher =
             getActivity()
                 .registerForActivityResult(
@@ -63,9 +69,30 @@ public class CapacitorScreenshotPlugin extends Plugin {
 
     @PluginMethod
     public void getScreenshot(PluginCall call) {
-        if (mediaProjection != null) {
+        if (mediaProjection != null && virtualDisplay != null) {
             savedCall = call;
-            startScreenshotCapture(mediaProjection);
+
+            final DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+            int screenWidth = metrics.widthPixels;
+            int screenHeight = metrics.heightPixels;
+            // Create an ImageReader to capture the screen content
+            ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
+            // Handle the captured images from the ImageReader
+            imageReader.setOnImageAvailableListener(
+                reader -> {
+                    Image image = imageReader.acquireLatestImage();
+                    if (image != null) {
+                        // Process the captured image
+                        processScreenshot(image);
+                        // Release the image resources
+                        image.close();
+                    }
+                },
+                handler
+            );
+
+            // set the new surface to get the capture
+            virtualDisplay.setSurface(imageReader.getSurface());
         } else {
             ScreenCaptureManager screenCaptureManager = new ScreenCaptureManager(getContext());
             screenCaptureManager.startForeground();
@@ -94,47 +121,27 @@ public class CapacitorScreenshotPlugin extends Plugin {
     }
 
     private void startScreenshotCapture(MediaProjection mediaProjection) {
-        HandlerThread handlerThread = new HandlerThread("ScreenshotThread");
-        handlerThread.start();
-
         final DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
         int screenWidth = metrics.widthPixels;
         int screenHeight = metrics.heightPixels;
-
-        Handler handler = new Handler(handlerThread.getLooper());
-
         int screenDensity = metrics.densityDpi;
 
         // Create an ImageReader to capture the screen content
-        @SuppressLint("WrongConstant")
         ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
+
+        mediaProjection.registerCallback(new MediaProjection.Callback() {}, null);
         // Create a VirtualDisplay using the mediaProjection and imageReader
-        final VirtualDisplay virtualDisplay = mediaProjection.createVirtualDisplay(
-            "ScreenCapture",
-            screenWidth,
-            screenHeight,
-            screenDensity,
-            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-            imageReader.getSurface(),
-            null,
-            handler
-        );
-
-        // Handle the captured images from the ImageReader
-        imageReader.setOnImageAvailableListener(
-            reader -> {
-                Image image = imageReader.acquireLatestImage();
-                if (image != null) {
-                    // Process the captured image
-                    processScreenshot(image);
-                    // Release the image resources
-                    image.close();
-
-                    virtualDisplay.release();
-                }
-            },
-            handler
-        );
+        this.virtualDisplay =
+            mediaProjection.createVirtualDisplay(
+                "ScreenCapture",
+                screenWidth,
+                screenHeight,
+                screenDensity,
+                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                imageReader.getSurface(),
+                null,
+                handler
+            );
     }
 
     private void processScreenshot(Image image) {
