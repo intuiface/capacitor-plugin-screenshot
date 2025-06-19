@@ -1,22 +1,13 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type {
-  CapacitorScreenshotPlugin,
-  ScreenshotOptions,
-  ScreenshotValue,
-} from './definitions';
+import type { CapacitorScreenshotPlugin, ScreenshotOptions, ScreenshotValue } from './definitions';
 
-export class CapacitorScreenshotWeb
-  extends WebPlugin
-  implements CapacitorScreenshotPlugin
-{
+export class CapacitorScreenshotWeb extends WebPlugin implements CapacitorScreenshotPlugin {
   private captureStream: any;
   private videoCapture: any;
   private captureCanvas: any;
 
-  async getScreenshot(
-    options: ScreenshotOptions,
-  ): Promise<ScreenshotValue | null> {
+  async getScreenshot(options: ScreenshotOptions): Promise<ScreenshotValue | null> {
     try {
       if (!this.captureStream) {
         // display a message ?
@@ -41,13 +32,10 @@ export class CapacitorScreenshotWeb
         this.captureCanvas = document.createElement('canvas');
       }
 
-      return new Promise<any>(resolve => {
+      return new Promise<any>((resolve) => {
         const callbackLoadedMetadata = () => {
           // unbind from loaded metadata
-          this.videoCapture.removeEventListener(
-            'loadedmetadata',
-            callbackLoadedMetadata,
-          );
+          this.videoCapture.removeEventListener('loadedmetadata', callbackLoadedMetadata);
           // set the canvas size with the video size
           this.captureCanvas.width = this.videoCapture.videoWidth;
           this.captureCanvas.height = this.videoCapture.videoHeight;
@@ -55,15 +43,12 @@ export class CapacitorScreenshotWeb
           let newHeight = this.captureCanvas.height;
           if (options.size) {
             newWidth = options.size;
-            newHeight =
-              (this.captureCanvas.height * newWidth) / this.captureCanvas.width;
+            newHeight = (this.captureCanvas.height * newWidth) / this.captureCanvas.width;
             this.captureCanvas.width = newWidth;
             this.captureCanvas.height = newHeight;
           }
           // draw the video into canvas
-          this.captureCanvas
-            .getContext('2d')
-            .drawImage(this.videoCapture, 0, 0, newWidth, newHeight);
+          this.captureCanvas.getContext('2d').drawImage(this.videoCapture, 0, 0, newWidth, newHeight);
           let quality = 1.0;
           if (options.quality) {
             quality = options.quality / 100;
