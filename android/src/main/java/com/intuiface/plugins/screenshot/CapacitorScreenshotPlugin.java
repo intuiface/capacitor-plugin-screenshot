@@ -50,21 +50,20 @@ public class CapacitorScreenshotPlugin extends Plugin {
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
 
-        mediaProjectionActivityLauncher =
-            getActivity()
-                .registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-                                assert result.getData() != null;
-                                mediaProjection = mediaProjectionManager.getMediaProjection(result.getResultCode(), result.getData());
-                                startScreenshotCapture(mediaProjection);
-                            }
+        mediaProjectionActivityLauncher = getActivity()
+            .registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            assert result.getData() != null;
+                            mediaProjection = mediaProjectionManager.getMediaProjection(result.getResultCode(), result.getData());
+                            startScreenshotCapture(mediaProjection);
                         }
                     }
-                );
+                }
+            );
     }
 
     @PluginMethod
@@ -105,8 +104,9 @@ public class CapacitorScreenshotPlugin extends Plugin {
                         public void run() {
                             Activity activity = getBridge().getActivity();
                             if (activity != null) {
-                                mediaProjectionManager =
-                                    (MediaProjectionManager) activity.getSystemService(Activity.MEDIA_PROJECTION_SERVICE);
+                                mediaProjectionManager = (MediaProjectionManager) activity.getSystemService(
+                                    Activity.MEDIA_PROJECTION_SERVICE
+                                );
 
                                 savedCall = call;
                                 Intent projectionIntent = mediaProjectionManager.createScreenCaptureIntent();
@@ -131,17 +131,16 @@ public class CapacitorScreenshotPlugin extends Plugin {
 
         mediaProjection.registerCallback(new MediaProjection.Callback() {}, null);
         // Create a VirtualDisplay using the mediaProjection and imageReader
-        this.virtualDisplay =
-            mediaProjection.createVirtualDisplay(
-                "ScreenCapture",
-                screenWidth,
-                screenHeight,
-                screenDensity,
-                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                imageReader.getSurface(),
-                null,
-                handler
-            );
+        this.virtualDisplay = mediaProjection.createVirtualDisplay(
+            "ScreenCapture",
+            screenWidth,
+            screenHeight,
+            screenDensity,
+            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+            imageReader.getSurface(),
+            null,
+            handler
+        );
     }
 
     private void processScreenshot(Image image) {
@@ -204,7 +203,7 @@ public class CapacitorScreenshotPlugin extends Plugin {
         int desiredWidth = savedCall.getInt("size", width);
         // scale but keep ratio
         int scaledWidth = Math.min(width, desiredWidth);
-        int scaledHeight = height * scaledWidth / width;
+        int scaledHeight = (height * scaledWidth) / width;
         bitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, false);
 
         return bitmap;

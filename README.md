@@ -71,7 +71,7 @@ Function to take a screenshot
 
 ## iOS
 
-iOS version 13+ is supported.
+iOS version 14+ is supported.
 
 Nothing more to do, it should work by calling the `getScreenshot` function.
 
