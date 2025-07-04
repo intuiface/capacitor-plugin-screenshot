@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v2.0.0...v3.0.0) (2025-07-03)
+
+
+### Features
+
+* migrate capacitor to version 7 ([bceac40](https://github.com/intuiface/capacitor-plugin-screenshot/commit/bceac40bb91b4d92bf3086d3c15af54ed8332b67))
+
+
+### Miscellaneous Chores
+
+* release 3.0.0 ([6c1f27b](https://github.com/intuiface/capacitor-plugin-screenshot/commit/6c1f27b8658001da1d96893809f1c053d379368f))
+
 ## [2.0.0](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v1.0.2...v2.0.0) (2024-07-11)
 
 
