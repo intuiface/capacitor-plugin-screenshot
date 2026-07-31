@@ -42,7 +42,8 @@
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
     "prepublishOnly": "npm run build",
-    "prepareHooks": "npx shx cp -u ./.githooks/* ./.git/hooks/"
+    "prepareHooks": "npx shx cp -u ./.githooks/* ./.git/hooks/",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@capacitor/android": "^8.0.0",
