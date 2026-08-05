@@ -50,20 +50,19 @@ public class CapacitorScreenshotPlugin extends Plugin {
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
 
-        mediaProjectionActivityLauncher = getActivity()
-            .registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            assert result.getData() != null;
-                            mediaProjection = mediaProjectionManager.getMediaProjection(result.getResultCode(), result.getData());
-                            startScreenshotCapture(mediaProjection);
-                        }
+        mediaProjectionActivityLauncher = getActivity().registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        assert result.getData() != null;
+                        mediaProjection = mediaProjectionManager.getMediaProjection(result.getResultCode(), result.getData());
+                        startScreenshotCapture(mediaProjection);
                     }
                 }
-            );
+            }
+        );
     }
 
     @PluginMethod
@@ -77,18 +76,15 @@ public class CapacitorScreenshotPlugin extends Plugin {
             // Create an ImageReader to capture the screen content
             ImageReader imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
             // Handle the captured images from the ImageReader
-            imageReader.setOnImageAvailableListener(
-                reader -> {
-                    Image image = imageReader.acquireLatestImage();
-                    if (image != null) {
-                        // Process the captured image
-                        processScreenshot(image);
-                        // Release the image resources
-                        image.close();
-                    }
-                },
-                handler
-            );
+            imageReader.setOnImageAvailableListener((reader) -> {
+                Image image = imageReader.acquireLatestImage();
+                if (image != null) {
+                    // Process the captured image
+                    processScreenshot(image);
+                    // Release the image resources
+                    image.close();
+                }
+            }, handler);
 
             // set the new surface to get the capture
             virtualDisplay.setSurface(imageReader.getSurface());
@@ -96,27 +92,23 @@ public class CapacitorScreenshotPlugin extends Plugin {
             ScreenCaptureManager screenCaptureManager = new ScreenCaptureManager(getContext());
             screenCaptureManager.startForeground();
 
-            getBridge()
-                .getActivity()
-                .runOnUiThread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            Activity activity = getBridge().getActivity();
-                            if (activity != null) {
-                                mediaProjectionManager = (MediaProjectionManager) activity.getSystemService(
-                                    Activity.MEDIA_PROJECTION_SERVICE
-                                );
+            getBridge().getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Activity activity = getBridge().getActivity();
+                        if (activity != null) {
+                            mediaProjectionManager = (MediaProjectionManager) activity.getSystemService(Activity.MEDIA_PROJECTION_SERVICE);
 
-                                savedCall = call;
-                                Intent projectionIntent = mediaProjectionManager.createScreenCaptureIntent();
-                                mediaProjectionActivityLauncher.launch(projectionIntent);
-                            } else {
-                                call.reject("Activity is null");
-                            }
+                            savedCall = call;
+                            Intent projectionIntent = mediaProjectionManager.createScreenCaptureIntent();
+                            mediaProjectionActivityLauncher.launch(projectionIntent);
+                        } else {
+                            call.reject("Activity is null");
                         }
                     }
-                );
+                }
+            );
         }
     }
 
