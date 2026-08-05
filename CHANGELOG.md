@@ -1,5 +1,24 @@
 # Changelog
 
+## [4.0.0](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v3.0.0...v4.0.0) (2026-08-05)
+
+
+### Features
+
+* migrate capacitor to version 8 ([ffe04dc](https://github.com/intuiface/capacitor-plugin-screenshot/commit/ffe04dce8193946e7dcb4021d4af55175186784b))
+
+
+### Bug Fixes
+
+* add prepare script to be able to install plugin from github branch ([f6b1d4a](https://github.com/intuiface/capacitor-plugin-screenshot/commit/f6b1d4a05ef7ce1e46ece46188d2d3f3afda7cdf))
+* dependencies versions ([ff15897](https://github.com/intuiface/capacitor-plugin-screenshot/commit/ff1589717d2a7104633b08601af2d49f35e4844b))
+* remove prepare script in package.json ([727239a](https://github.com/intuiface/capacitor-plugin-screenshot/commit/727239a478e491c3b08f18bda7b61d4ac7ded185))
+
+
+### Miscellaneous Chores
+
+* release 4.0.0 ([2d36670](https://github.com/intuiface/capacitor-plugin-screenshot/commit/2d3667064038bb982ac9a875749127ca8fcc026c))
+
 ## [3.0.0](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v2.0.0...v3.0.0) (2025-07-03)
 
 
