@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.0](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v4.0.0...v8.0.0) (2026-08-11)
+
+
+### Bug Fixes
+
+* align package version with Capacitor 8 ([3acbe51](https://github.com/intuiface/capacitor-plugin-screenshot/commit/3acbe516091b7d531ae8cdf6143ca4fd28af9c39))
+
 ## [4.0.0](https://github.com/intuiface/capacitor-plugin-screenshot/compare/v3.0.0...v4.0.0) (2026-08-05)
 
 
